@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakcode | Разработка и дизайн</title>
+  <meta name="description"
+    content="Breakcode — сайты, лендинги и дизайн для малого бизнеса. Команда помогает запускать понятные сайты, которые вызывают доверие и помогают получать заявки." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="shortcut icon" href="/favicon.svg">
+</head>
+
+<body>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+  <div class="scrollbar-x" id="scrollbarX" aria-hidden="true">
+    <div class="scrollbar-x__track">
+      <div class="scrollbar-x__thumb" id="scrollbarThumb"></div>
+    </div>
+  </div>
+
+  <a href="#top" class="back-to-top" id="backToTop" aria-label="Наверх">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 5l-7 7 1.4 1.4L11 8.8V19h2V8.8l4.6 4.6L19 12l-7-7z" />
+    </svg>
+  </a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand interactive" aria-label="Breakcode">
+        <span class="brand-text">Breakcode</span>
+      </a>
+
+      <button class="menu-toggle interactive" aria-label="Открыть меню" aria-expanded="false"
+        aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav desktop-nav">
+        <a class="interactive" href="#services">Услуги</a>
+        <a class="interactive" href="#process">Процесс</a>
+        <a class="interactive" href="#portfolio">Работы</a>
+        <a class="interactive" href="#team">Команда</a>
+        <a class="interactive" href="#faq">FAQ</a>
+      </nav>
+
+      <a href="#contact" class="btn btn-dark desktop-cta interactive">Оставить заявку</a>
+    </div>
+
+    <div id="mobile-nav" class="mobile-nav">
+      <div class="container mobile-nav-inner">
+        <a class="interactive" href="#services">Услуги</a>
+        <a class="interactive" href="#process">Процесс</a>
+        <a class="interactive" href="#portfolio">Работы</a>
+        <a class="interactive" href="#team">Команда</a>
+        <a class="interactive" href="#faq">FAQ</a>
+        <a href="#contact" class="btn btn-dark btn-full interactive">Оставить заявку</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-noise" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <span class="eyebrow">Сайты и дизайн для малого бизнеса</span>
+          <h1>Создаём сайты, которые помогают получать заявки</h1>
+          <p class="hero-text">
+            Breakcode — команда, которая делает лендинги, сайты и интерфейсы без лишней сложности.
+            В фокусе — ясная подача услуг, аккуратный визуал и понятный путь пользователя до обращения.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-accent interactive">Обсудить проект</a>
+            <a href="#portfolio" class="btn btn-light interactive">Посмотреть кейсы</a>
+          </div>
+
+          <ul class="hero-points">
+            <li>Понятная структура</li>
+            <li>Адаптация под телефон</li>
+            <li>Дизайн и запуск под ключ</li>
+          </ul>
+        </div>
+
+        <div class="hero-card reveal">
+          <div class="hero-orbit hero-orbit-one"></div>
+          <div class="hero-orbit hero-orbit-two"></div>
+
+          <div class="mockup-card hero-float">
+            <div class="mockup-top">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-badge">Подход команды</div>
+              <div class="mockup-title">Сайт, который объясняет ценность услуги за первые секунды</div>
+              <div class="mockup-lines">
+                <span class="w-90"></span>
+                <span class="w-78"></span>
+                <span class="w-84"></span>
+              </div>
+              <div class="mockup-grid">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="mockup-stats">
+                <div>
+                  <strong>1–3 дня</strong>
+                  <span>на прототип</span>
+                </div>
+                <div>
+                  <strong>Под ключ</strong>
+                  <span>дизайн + код</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-glow hero-glow-one"></div>
+            <div class="hero-glow hero-glow-two"></div>
+            <div class="hero-scan"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-services" id="services">
+      <div class="parallax-shape parallax-shape-a" data-parallax="0.08" aria-hidden="true"></div>
+      <div class="parallax-shape parallax-shape-b" data-parallax="-0.06" aria-hidden="true"></div>
+
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Услуги</span>
+          <h2>Что делает команда</h2>
+          <p>Собрали только то, что действительно нужно малому бизнесу — без перегруженного списка и лишних опций.</p>
+        </div>
+
+        <div class="cards-grid cards-grid-services">
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-landing">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="9" y="12" width="46" height="34" rx="11" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="13" y="17" width="38" height="5" rx="2.5" fill="#DCE7FF" />
+                <rect x="15" y="26" width="20" height="12" rx="6" fill="#2F6DF6" />
+                <rect x="39" y="27" width="9" height="9" rx="4.5" fill="#7AA2FF" />
+                <rect x="39" y="39" width="11" height="4" rx="2" fill="#D5E3FF" />
+                <path d="M22 50h20" stroke="#CFE0FF" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M28 46v4m8-4v4" stroke="#D9E5FB" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <h3>Лендинг под ключ</h3>
+            <p>Одностраничный сайт для услуги, продукта, рекламы или запуска нового направления.</p>
+            <div class="service-meta">от 10 000 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-business">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="10" y="10" width="18" height="18" rx="6" fill="#EEF4FF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="36" y="10" width="18" height="18" rx="6" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="10" y="36" width="18" height="18" rx="6" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="36" y="36" width="18" height="18" rx="6" fill="#EEF4FF" stroke="#CFE0FF" stroke-width="2" />
+                <circle cx="19" cy="19" r="3.5" fill="#2F6DF6" />
+                <rect x="23.5" y="17.5" width="2.5" height="3" rx="1.25" fill="#BFD3FF" />
+                <circle cx="45" cy="19" r="3.5" fill="#7AA2FF" />
+                <rect x="49.5" y="17.5" width="2.5" height="3" rx="1.25" fill="#BFD3FF" />
+                <circle cx="19" cy="45" r="3.5" fill="#7AA2FF" />
+                <rect x="23.5" y="43.5" width="2.5" height="3" rx="1.25" fill="#BFD3FF" />
+                <circle cx="45" cy="45" r="3.5" fill="#2F6DF6" />
+                <rect x="49.5" y="43.5" width="2.5" height="3" rx="1.25" fill="#BFD3FF" />
+              </svg>
+            </div>
+            <h3>Сайт для бизнеса</h3>
+            <p>Небольшой многостраничный сайт с понятной структурой, блоками доверия и формой заявки.</p>
+            <div class="service-meta">от 20 000 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-ux">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="10" y="12" width="28" height="24" rx="9" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="15" y="18" width="11" height="5" rx="2.5" fill="#2F6DF6" />
+                <circle cx="19" cy="29" r="4" fill="#7AA2FF" />
+                <rect x="28" y="18" width="5" height="2.5" rx="1.25" fill="#D5E3FF" />
+                <path d="M42 43l3.7-7.7L54 34l-6.3-4.1 1-8.4-6.2 5.5-7.6-2.3 3.4 7.2-4.8 7 8.3-.9z" fill="#2F6DF6" />
+                <circle cx="44" cy="44" r="2.1" fill="#7AA2FF" />
+              </svg>
+            </div>
+            <h3>UX/UI дизайн</h3>
+            <p>Прототипы, интерфейсы, доработка логики экранов и визуальное оформление продукта.</p>
+            <div class="service-meta">от 12 000 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-redesign">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="11" y="14" width="24" height="18" rx="7" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="27" y="28" width="26" height="20" rx="8" fill="#EEF4FF" stroke="#C2D7FF" stroke-width="2" />
+                <path d="M42 14a9 9 0 0 1 8 9" fill="none" stroke="#2F6DF6" stroke-width="2.8" stroke-linecap="round" />
+                <path d="M46 12h6v6" fill="none" stroke="#2F6DF6" stroke-width="2.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3>Редизайн сайта</h3>
+            <p>Обновление структуры и визуала, если текущий сайт устарел или не помогает получать обращения.</p>
+            <div class="service-meta">от 10 000 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-logo">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <path d="M32 10l16 9.5v23L32 52 16 42.5v-23z" fill="#EEF4FF" stroke="#C8DAFF" stroke-width="2" />
+                <path d="M26 22h8.2a7.8 7.8 0 1 1 0 15.6H26z" fill="#2F6DF6" />
+                <path d="M26 22v15.6" fill="none" stroke="#7AA2FF" stroke-width="2.8" stroke-linecap="round" />
+                <circle cx="44" cy="19" r="3.6" fill="#7AA2FF" />
+              </svg>
+            </div>
+            <h3>Логотип</h3>
+            <p>Аккуратный знак и базовое визуальное направление для старта или обновления бренда.</p>
+            <div class="service-meta">от 6 000 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-banners">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="12" y="16" width="26" height="18" rx="7" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <rect x="26" y="28" width="26" height="18" rx="7" fill="#EEF4FF" stroke="#C1D6FF" stroke-width="2" />
+                <rect x="18" y="21" width="10" height="4" rx="2" fill="#2F6DF6" />
+                <rect x="32" y="33" width="11" height="4" rx="2" fill="#7AA2FF" />
+              </svg>
+            </div>
+            <h3>Баннеры</h3>
+            <p>Рекламные креативы, промо-баннеры и визуалы для сайта, соцсетей и маркетинговых запусков.</p>
+            <div class="service-meta">от 2 500 ₽</div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon service-icon-dev">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="10" y="14" width="26" height="30" rx="9" fill="#F8FBFF" stroke="#CFE0FF" stroke-width="2" />
+                <path d="M20 28l-5 4 5 4" fill="none" stroke="#2F6DF6" stroke-width="2.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M26 28l5 4-5 4" fill="none" stroke="#2F6DF6" stroke-width="2.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M45 21l8 11-8 11-1.5-7H37v-8h6.5z" fill="#2F6DF6" />
+                <circle cx="47" cy="32" r="3.2" fill="#7AA2FF" />
+              </svg>
+            </div>
+            <h3>Верстка и запуск</h3>
+            <p>HTML, CSS, JavaScript и подключение формы обратной связи в Telegram.</p>
+            <div class="service-meta">по задаче</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container problem-grid">
+        <div class="problem-card reveal">
+          <span class="eyebrow">Частая проблема</span>
+          <h2 class="problem-title">У бизнеса есть услуга, но сайт не умеет её объяснять</h2>
+          <p>
+            Часто сайт либо выглядит устаревшим, либо перегружен текстом и не отвечает на главный вопрос клиента:
+            «Чем вы полезны и почему вам можно доверять?»
+          </p>
+        </div>
+
+        <div class="solution-card reveal">
+          <span class="eyebrow">Подход команды</span>
+          <h3 class="solution-title">Подход команды</h3>
+          <div class="approach-list">
+            <div class="approach-item"><span>01</span>
+              <p>Сначала упрощается структура и подача</p>
+            </div>
+            <div class="approach-item"><span>02</span>
+              <p>Главное показывается в первых экранах</p>
+            </div>
+            <div class="approach-item"><span>03</span>
+              <p>Прорабатывается удобный мобильный сценарий</p>
+            </div>
+            <div class="approach-item"><span>04</span>
+              <p>Добавляется понятный призыв к действию</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Процесс</span>
+          <h2>Как строится работа</h2>
+          <p>Без сложной бюрократии: коротко, прозрачно и по шагам.</p>
+        </div>
+
+        <div class="process-flow reveal" id="processFlow">
+          <div class="process-line">
+            <div class="process-line-fill" id="processLineFill"></div>
+          </div>
+
+          <div class="timeline timeline-five">
+            <article class="timeline-item process-step" data-step>
+              <span class="timeline-number">01</span>
+              <h3>Созвон и задача</h3>
+              <p>Обсуждается бизнес, список услуг, ожидания по подаче и главное действие, к которому должен вести сайт.
+              </p>
+            </article>
+            <article class="timeline-item process-step" data-step>
+              <span class="timeline-number">02</span>
+              <h3>Документация и договор</h3>
+              <p>Перед стартом фиксируются этапы, состав работ и договор. Работа производится по 50% предоплате.</p>
+            </article>
+            <article class="timeline-item process-step" data-step>
+              <span class="timeline-number">03</span>
+              <h3>Прототип</h3>
+              <p>Собирается структура сайта и показывается логика блоков, пользовательских сценариев и заявок.</p>
+            </article>
+            <article class="timeline-item process-step" data-step>
+              <span class="timeline-number">04</span>
+              <h3>Дизайн</h3>
+              <p>Интерфейс оформляется чисто и современно, но без ощущения «слишком дорого и сложно».</p>
+            </article>
+            <article class="timeline-item process-step" data-step>
+              <span class="timeline-number">05</span>
+              <h3>Верстка и запуск</h3>
+              <p>Проект переносится в код, подключаются формы и подготавливается публикация.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="portfolio">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Работы</span>
+          <h2>Кейсы команды</h2>
+          <p>Ниже — несколько направлений, в которых команда уже проектировала интерфейсы, каталоги и цифровые продукты.
+          </p>
+        </div>
+
+        <div class="portfolio-grid portfolio-grid-cases">
+          <article class="portfolio-card case-card reveal">
+            <div class="case-slider" data-slider>
+              <div class="case-slides">
+                <div class="case-slide active">
+                  <img src="/img/cover efirit.png" alt="cover">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/slide A efirit.png" alt="slide A efirit">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/slide B efirit.png" alt="slide B efirit">
+                </div>
+              </div>
+              <div class="case-dots">
+                <button class="case-dot interactive active" type="button" aria-label="Слайд 1"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 2"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 3"></button>
+              </div>
+            </div>
+            <div class="portfolio-body">
+              <div class="case-tags">
+                <span>Mobile App</span>
+                <span>FinTech</span>
+                <span>Product</span>
+              </div>
+              <h3>Efirit</h3>
+              <p>Мобильное приложение для подключения касс в единый профиль, работы с RRN и эквайрингом. Основной фокус
+                — понятный онбординг, регистрация и авторизация без лишних шагов.</p>
+            </div>
+          </article>
+
+          <article class="portfolio-card case-card reveal">
+            <div class="case-slider" data-slider>
+              <div class="case-slides">
+                <div class="case-slide active">
+                  <img src="/img/cover thai.png" alt="cover thai">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/cjm thai.png" alt="cjm thai">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/main thai.png" alt="main thai">
+                </div>
+              </div>
+              <div class="case-dots">
+                <button class="case-dot interactive active" type="button" aria-label="Слайд 1"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 2"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 3"></button>
+              </div>
+            </div>
+            <div class="portfolio-body">
+              <div class="case-tags">
+                <span>E-commerce</span>
+                <span>Travel</span>
+                <span>UX Case</span>
+              </div>
+              <h3>Thai Tour</h3>
+              <p>Интернет-магазин оператора туров с акцентом на удобный подбор предложений, понятную структуру каталога
+                и доверительный пользовательский опыт при выборе путешествия.</p>
+            </div>
+          </article>
+
+          <article class="portfolio-card case-card reveal">
+            <div class="case-slider" data-slider>
+              <div class="case-slides">
+                <div class="case-slide active">
+                  <img src="/img/cover element.png" alt="cover element">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/slide A element.png" alt="slide A element">
+                </div>
+                <div class="case-slide">
+                  <img src="/img/slide B element.png" alt="slide B element">
+                </div>
+              </div>
+              <div class="case-dots">
+                <button class="case-dot interactive active" type="button" aria-label="Слайд 1"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 2"></button>
+                <button class="case-dot interactive" type="button" aria-label="Слайд 3"></button>
+              </div>
+            </div>
+            <div class="portfolio-body">
+              <div class="case-tags">
+                <span>Real Estate</span>
+                <span>Catalog</span>
+                <span>Lead Gen</span>
+              </div>
+              <h3>Элемент</h3>
+              <p>Сайт компании-застройщика с акцентом на продажу квартир, удобный подбор планировок и понятный путь
+                пользователя от первого просмотра до заявки на консультацию.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Команда</span>
+          <h2>Кто работает над проектами</h2>
+          <p>Каждый специалист отвечает за свою часть процесса — от логики сценариев до визуала и запуска в код.</p>
+        </div>
+
+        <div class="team-slider reveal" data-team-slider>
+          <div class="team-controls">
+            <button class="team-btn interactive" type="button" data-team-prev aria-label="Предыдущий слайд">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14.5 5.5L8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button class="team-btn interactive" type="button" data-team-next aria-label="Следующий слайд">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9.5 5.5L16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="team-track" data-team-track>
+            <article class="team-card">
+              <div class="team-avatar">
+                <img src="/img/team/Nick.jpg" alt="founder">
+              </div>
+              <h3>Никита</h3>
+              <div class="team-role">Lead UX/UI Designer</div>
+              <ul class="team-points">
+                <li>Архитектура экранов и сценариев</li>
+                <li>Прототипы и UI-система</li>
+                <li>Фокус на малом бизнесе</li>
+                <li>Контроль визуального качества</li>
+              </ul>
+            </article>
+
+            <article class="team-card">
+              <div class="team-avatar">
+                <img src="/img/team/Anna.jpg" alt="anna">
+              </div>
+              <h3>Анна</h3>
+              <div class="team-role">UX Researcher</div>
+              <ul class="team-points">
+                <li>Сбор вводных и интервью</li>
+                <li>Выявление пользовательских барьеров</li>
+                <li>Приоритизация гипотез</li>
+                <li>Упрощение логики сайта</li>
+              </ul>
+            </article>
+
+            <article class="team-card">
+              <div class="team-avatar">
+                <img src="/img/team/Ilya.jpg" alt="ilya">
+              </div>
+              <h3>Илья</h3>
+              <div class="team-role">Web Designer</div>
+              <ul class="team-points">
+                <li>Первый экран и подача оффера</li>
+                <li>Карточки, баннеры, графика</li>
+                <li>Адаптивные состояния</li>
+                <li>Работа с визуальной иерархией</li>
+              </ul>
+            </article>
+
+            <article class="team-card">
+              <div class="team-avatar">
+                <img src="/img/team/Maxim.jpg" alt="max">
+              </div>
+              <h3>Максим</h3>
+              <div class="team-role">Frontend Developer</div>
+              <ul class="team-points">
+                <li>HTML, CSS, JavaScript</li>
+                <li>Анимации и интерактивность</li>
+                <li>Интеграция форм и Telegram</li>
+                <li>Подготовка к публикации</li>
+              </ul>
+            </article>
+
+            <article class="team-card">
+              <div class="team-avatar">
+                <img src="/img/team/Sofia.jpg" alt="sofia">
+              </div>
+              <h3>София</h3>
+              <div class="team-role">Project Manager</div>
+              <ul class="team-points">
+                <li>Коммуникация и этапы работ</li>
+                <li>Документация и дедлайны</li>
+                <li>Финальная сверка перед релизом</li>
+                <li>Контроль процесса запуска</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2>Частые вопросы</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item reveal is-open" open>
+            <summary class="interactive">
+              <span>Можно ли сделать сайт быстро?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Да. Если задача небольшая и материалы готовы, первый рабочий вариант можно собрать в короткий срок.
+                </p>
+              </div>
+            </div>
+          </details>
+          <details class="faq-item reveal">
+            <summary class="interactive">
+              <span>Команда делает только дизайн или ещё и код?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Можно заказать и визуал, и верстку, чтобы не искать отдельного разработчика под запуск.</p>
+              </div>
+            </div>
+          </details>
+          <details class="faq-item reveal">
+            <summary class="interactive">
+              <span>Если текстов пока нет, это проблема?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Нет. Можно начать со структуры и логики, а затем собрать понятные формулировки для оффера и блоков.
+                </p>
+              </div>
+            </div>
+          </details>
+          <details class="faq-item reveal">
+            <summary class="interactive">
+              <span>Можно ли начать с редизайна без полного запуска с нуля?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Да. Если база уже есть, можно обновить только визуал, структуру или ключевые блоки без полной
+                  пересборки сайта.</p>
+              </div>
+            </div>
+          </details>
+          <details class="faq-item reveal">
+            <summary class="interactive">
+              <span>Подойдёт ли такой формат, если бюджет ограничен?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Да. Можно начать с минимального набора блоков, а затем поэтапно развивать сайт без лишней нагрузки на
+                  бюджет.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy reveal">
+          <span class="eyebrow">Заявка</span>
+          <h2>Расскажите, что нужно сделать</h2>
+          <p>
+            Коротко опишите задачу, оставьте Telegram — и команда предложит понятное решение под ваш бюджет.
+          </p>
+          <ul class="contact-points">
+            <li>Ответ без сложных терминов</li>
+            <li>Подсказка по оптимальному формату сайта</li>
+            <li>Ориентир по срокам и объему</li>
+          </ul>
+        </div>
+
+        <form class="contact-form reveal" id="leadForm">
+          <label>
+            Имя
+            <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
+          </label>
+
+          <label>
+            Telegram
+            <input type="text" id="telegram" name="telegram" placeholder="@username или номер" required>
+          </label>
+
+          <label>
+            Что нужно сделать
+            <textarea id="message" name="message" rows="5"
+              placeholder="Лендинг для услуги, сайт для студии, редизайн текущего сайта, создание логотипа или мелкие доработки"></textarea>
+          </label>
+
+          <button type="submit" class="btn btn-dark btn-full interactive">Отправить заявку</button>
+          <p class="form-status" id="formStatus" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter">
+    <div class="footer-glow footer-glow-left" aria-hidden="true"></div>
+    <div class="footer-glow footer-glow-right" aria-hidden="true"></div>
+
+    <div class="container footer-frame">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="#top" class="footer-brand interactive">Breakcode</a>
+          <p class="footer-description">Сайты, интерфейсы и запуск под ключ для малого бизнеса. Без лишней сложности, с
+            понятной структурой и аккуратным визуалом.</p>
+
+          <div class="footer-pills">
+            <span>Лендинги</span>
+            <span>UX/UI</span>
+            <span>Редизайн</span>
+            <span>Кодинг</span>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-title">Формат работы</div>
+          <a class="interactive" href="#contact">Прототип и дизайн</a>
+          <a class="interactive" href="#contact">Верстка и запуск</a>
+          <a class="interactive" href="#contact">Встраивание Telegram-форм</a>
+          <a class="interactive" href="#contact">Поддержка по задачам</a>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-title">Разделы</div>
+          <a class="interactive" href="#services">Услуги</a>
+          <a class="interactive" href="#portfolio">Работы</a>
+          <a class="interactive" href="#team">Команда</a>
+          <a class="interactive" href="#faq">FAQ</a>
+        </div>
+
+      </div>
+
+      <div class="footer-divider-line"></div>
+
+      <div class="footer-bottom">
+        <h6 class="footer-copy">©2023–2026 Breakcode</h6>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
