@@ -1055,7 +1055,6 @@ h3,
 .case-slide {
   position: relative;
   flex: 0 0 100%;
-  min-height: 230px;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(240, 244, 255, 0.92)),
@@ -1068,7 +1067,7 @@ h3,
 
 .case-slide img {
   width: 100%;
-  height: 230px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
