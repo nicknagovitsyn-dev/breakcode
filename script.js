@@ -148,34 +148,120 @@ if (window.Lenis) {
 const sliders = document.querySelectorAll('[data-slider]');
 
 sliders.forEach((slider) => {
-  const slides = slider.querySelectorAll('.case-slide');
-  const dots = slider.querySelectorAll('.case-dot');
-  let current = 0;
-  let intervalId;
+  const viewport = slider.querySelector('.case-viewport');
+  const track = slider.querySelector('.case-slides');
+  const dots = [...slider.querySelectorAll('.case-dot')];
+  const originalSlides = [...track.querySelectorAll('.case-slide')];
 
-  function activate(index) {
-    slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-    current = index;
-  }
+  if (!viewport || !track || originalSlides.length < 2) return;
+
+  const firstClone = originalSlides[0].cloneNode(true);
+  const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+  firstClone.classList.add('is-clone');
+  lastClone.classList.add('is-clone');
+  track.prepend(lastClone);
+  track.append(firstClone);
+
+  const total = originalSlides.length;
+  const GAP = 12;
+  let currentIndex = 1;
+  let isDragging = false;
+  let startX = 0;
+  let dragOffset = 0;
+  let baseTranslate = 0;
+  let pointerId = null;
+
+  const getStep = () => 355 + GAP;
+
+  const getRealIndex = (virtualIndex) => {
+    if (virtualIndex === 0) return total - 1;
+    if (virtualIndex === total + 1) return 0;
+    return virtualIndex - 1;
+  };
+
+  const setActiveDot = (realIndex) => {
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === realIndex);
+    });
+  };
+
+  const applyTransform = (value) => {
+    track.style.transform = `translate3d(${value}px, 0, 0)`;
+  };
+
+  const snapTo = (index, withTransition = true) => {
+    currentIndex = index;
+    track.style.transition = withTransition ? 'transform 560ms cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    baseTranslate = -(getStep() * currentIndex);
+    applyTransform(baseTranslate);
+    setActiveDot(getRealIndex(currentIndex));
+  };
+
+  const normalizeLoop = () => {
+    if (currentIndex === 0) {
+      snapTo(total, false);
+    } else if (currentIndex === total + 1) {
+      snapTo(1, false);
+    }
+  };
+
+  const animateTo = (index) => {
+    snapTo(index, true);
+    const onEnd = () => {
+      track.removeEventListener('transitionend', onEnd);
+      normalizeLoop();
+    };
+    track.addEventListener('transitionend', onEnd);
+  };
 
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
-      activate(index);
-      restart();
+      if (isDragging) return;
+      animateTo(index + 1);
     });
   });
 
-  function next() {
-    activate((current + 1) % slides.length);
-  }
+  viewport.addEventListener('pointerdown', (event) => {
+    isDragging = true;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    dragOffset = 0;
+    track.classList.add('dragging');
+    track.style.transition = 'none';
+    viewport.setPointerCapture(pointerId);
+  });
 
-  function restart() {
-    clearInterval(intervalId);
-    intervalId = setInterval(next, 3200);
-  }
+  viewport.addEventListener('pointermove', (event) => {
+    if (!isDragging || event.pointerId !== pointerId) return;
+    dragOffset = event.clientX - startX;
+    applyTransform(baseTranslate + dragOffset * 0.92);
+  });
 
-  restart();
+  const endDrag = (event) => {
+    if (!isDragging) return;
+    if (event && pointerId !== null && event.pointerId !== pointerId) return;
+
+    isDragging = false;
+    track.classList.remove('dragging');
+
+    const threshold = 48;
+    if (dragOffset <= -threshold) {
+      animateTo(currentIndex + 1);
+    } else if (dragOffset >= threshold) {
+      animateTo(currentIndex - 1);
+    } else {
+      animateTo(currentIndex);
+    }
+
+    dragOffset = 0;
+    pointerId = null;
+  };
+
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+  viewport.addEventListener('dragstart', (event) => event.preventDefault());
+
+  snapTo(1, false);
 });
 
 const scrollbar = document.getElementById('scrollbarX');
