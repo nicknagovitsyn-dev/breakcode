@@ -150,32 +150,97 @@ const sliders = document.querySelectorAll('[data-slider]');
 sliders.forEach((slider) => {
   const slides = slider.querySelectorAll('.case-slide');
   const dots = slider.querySelectorAll('.case-dot');
+  const slidesTrack = slider.querySelector('.case-slides');
+  if (!slides.length || !slidesTrack) return;
+
+  const prevButton = document.createElement('button');
+  prevButton.type = 'button';
+  prevButton.className = 'case-arrow case-arrow-prev interactive';
+  prevButton.setAttribute('aria-label', 'Предыдущий слайд');
+  prevButton.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M14.5 5.5L8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+
+  const nextButton = document.createElement('button');
+  nextButton.type = 'button';
+  nextButton.className = 'case-arrow case-arrow-next interactive';
+  nextButton.setAttribute('aria-label', 'Следующий слайд');
+  nextButton.innerHTML = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9.5 5.5L16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
+
+  slider.append(prevButton, nextButton);
+
   let current = 0;
-  let intervalId;
 
   function activate(index) {
     slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
     dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    slidesTrack.style.transform = `translateX(-${index * 100}%)`;
+    prevButton.disabled = index === 0;
+    nextButton.disabled = index === slides.length - 1;
     current = index;
   }
 
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
       activate(index);
-      restart();
     });
   });
 
-  function next() {
-    activate((current + 1) % slides.length);
+  prevButton.addEventListener('click', () => {
+    if (current === 0) return;
+    activate(current - 1);
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (current >= slides.length - 1) return;
+    activate(current + 1);
+  });
+
+  let startX = 0;
+  let isDragging = false;
+
+  slidesTrack.addEventListener('pointerdown', (event) => {
+    startX = event.clientX;
+    isDragging = true;
+  });
+
+  slidesTrack.addEventListener('pointerup', (event) => {
+    if (!isDragging) return;
+    const deltaX = event.clientX - startX;
+    if (deltaX > 50 && current > 0) {
+      activate(current - 1);
+    } else if (deltaX < -50 && current < slides.length - 1) {
+      activate(current + 1);
+    }
+    isDragging = false;
+  });
+
+  slidesTrack.addEventListener('pointercancel', () => {
+    isDragging = false;
+  });
+
+  slidesTrack.addEventListener('pointerleave', () => {
+    isDragging = false;
+  });
+
+  function handleKey(event) {
+    if (event.key === 'ArrowLeft' && current > 0) {
+      activate(current - 1);
+    }
+    if (event.key === 'ArrowRight' && current < slides.length - 1) {
+      activate(current + 1);
+    }
   }
 
-  function restart() {
-    clearInterval(intervalId);
-    intervalId = setInterval(next, 3200);
-  }
+  slider.addEventListener('keydown', handleKey);
 
-  restart();
+  activate(0);
 });
 
 const scrollbar = document.getElementById('scrollbarX');
