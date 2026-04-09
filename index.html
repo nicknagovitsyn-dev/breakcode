@@ -638,26 +638,48 @@
           </ul>
         </div>
 
-        <form class="contact-form reveal" id="leadForm">
-          <label>
-            Имя
-            <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
-          </label>
+        <form class="contact-form reveal" id="leadForm" novalidate>
+  <label>
+    Имя
+    <input type="text" id="name" name="name" placeholder="Как к вам обращаться" autocomplete="name">
+  </label>
 
-          <label>
-            Telegram
-            <input type="text" id="telegram" name="telegram" placeholder="@username или номер" required>
-          </label>
+  <label class="contact-type-label">
+    Способ связи
+    <div class="contact-field" id="contactTypeField">
+      <input type="hidden" id="contactType" name="contactType" class="contact-field__native" value="telegram">
 
-          <label>
-            Что нужно сделать
-            <textarea id="message" name="message" rows="5"
-              placeholder="Лендинг для услуги, сайт для студии, редизайн текущего сайта, создание логотипа или мелкие доработки"></textarea>
-          </label>
+      <button type="button" class="contact-field__trigger" id="contactFieldTrigger" aria-haspopup="listbox" aria-expanded="false">
+        <span class="contact-field__value" id="contactFieldValue">Telegram</span>
+        <svg class="contact-field__icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
 
-          <button type="submit" class="btn btn-dark btn-full interactive">Отправить заявку</button>
-          <p class="form-status" id="formStatus" aria-live="polite"></p>
-        </form>
+      <div class="contact-field__menu" id="contactFieldMenu" role="listbox" aria-hidden="true">
+        <button type="button" class="contact-field__option is-active" data-value="telegram" role="option" aria-selected="true">Telegram</button>
+        <button type="button" class="contact-field__option" data-value="phone" role="option" aria-selected="false">Номер телефона</button>
+        <button type="button" class="contact-field__option" data-value="email" role="option" aria-selected="false">Электронная почта</button>
+      </div>
+    </div>
+  </label>
+
+  <label>
+    Контакт
+    <input type="text" id="contactField" name="contact" placeholder="@username" autocomplete="off"
+      autocapitalize="off" spellcheck="false" inputmode="text">
+  </label>
+
+  <label>
+    Что нужно сделать
+    <textarea id="message" name="message" rows="5"
+      placeholder="Лендинг для услуги, сайт для студии, редизайн текущего сайта, создание логотипа или мелкие доработки"></textarea>
+  </label>
+
+  <button type="submit" class="btn btn-dark btn-full interactive">Отправить заявку</button>
+
+</form>
       </div>
     </section>
   </main>

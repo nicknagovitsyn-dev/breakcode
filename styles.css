@@ -1724,3 +1724,349 @@ h3,
     display: none !important;
   }
 }
+
+/* ===== Form patch ===== */
+#leadForm {
+  display: grid;
+  gap: 14px;
+}
+
+#leadForm input,
+#leadForm select,
+#leadForm textarea {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(47, 109, 246, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  outline: none;
+  transition: border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+#leadForm textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+#leadForm select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 54px;
+  background-color: rgba(255, 255, 255, 0.88);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(240, 244, 255, 0.04)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.25 1.5L7 7.25L12.75 1.5' stroke='%232F6DF6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, right 18px center;
+  background-size: 100% 100%, 14px 9px;
+}
+
+#leadForm select:hover {
+  border-color: rgba(47, 109, 246, 0.2);
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+#leadForm select option {
+  color: var(--text);
+  background: #ffffff;
+}
+
+#leadForm input:focus,
+#leadForm select:focus,
+#leadForm textarea:focus {
+  border-color: rgba(47, 109, 246, 0.28);
+  box-shadow: 0 0 0 4px rgba(47, 109, 246, 0.08);
+}
+
+#leadForm input.is-error,
+#leadForm textarea.is-error,
+#leadForm select.is-error {
+  border-color: #ff5a5f !important;
+  color: #ff5a5f !important;
+  box-shadow: 0 0 0 4px rgba(255, 90, 95, 0.10) !important;
+}
+
+#leadForm input.is-error::placeholder,
+#leadForm textarea.is-error::placeholder {
+  color: #ff5a5f !important;
+  opacity: 1;
+}
+
+#leadForm input.is-success,
+#leadForm textarea.is-success,
+#leadForm select.is-success {
+  border-color: #35c46b !important;
+  color: #35c46b !important;
+  box-shadow: 0 0 0 4px rgba(53, 196, 107, 0.10) !important;
+}
+
+#leadForm input.is-success::placeholder,
+#leadForm textarea.is-success::placeholder {
+  color: #35c46b !important;
+  opacity: 1;
+}
+
+#leadForm select.is-error {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(240, 244, 255, 0.04)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.25 1.5L7 7.25L12.75 1.5' stroke='%23ff5a5f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+#leadForm select.is-success {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(240, 244, 255, 0.04)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1.25 1.5L7 7.25L12.75 1.5' stroke='%2335c46b' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.form-alert {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 120%);
+  opacity: 0;
+  pointer-events: none;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+  z-index: 99999;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+}
+
+.form-alert.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.form-alert.success {
+  background: #35c46b;
+}
+
+.form-alert.error {
+  background: #ff5a5f;
+}
+/* ===== /Form patch ===== */
+
+
+.contact-field {
+  position: relative;
+  width: 100%;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.contact-field__trigger {
+  position: relative;
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(47, 109, 246, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition:
+    border-color 0.24s ease,
+    box-shadow 0.24s ease,
+    background-color 0.24s ease,
+    color 0.24s ease,
+    transform 0.24s ease;
+}
+
+.contact-field__trigger:hover {
+  border-color: rgba(47, 109, 246, 0.22);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.contact-field__trigger:focus-visible {
+  outline: none;
+  border-color: rgba(47, 109, 246, 0.3);
+  box-shadow: 0 0 0 4px rgba(47, 109, 246, 0.08);
+}
+
+.contact-field__value {
+  font-size: 0.98rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.contact-field__icon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+  transition: transform 0.28s ease, color 0.24s ease;
+}
+
+.contact-field.is-open .contact-field__icon {
+  transform: rotate(180deg);
+}
+
+.contact-field.is-open .contact-field__trigger {
+  border-color: rgba(47, 109, 246, 0.24);
+  box-shadow: 0 0 0 4px rgba(47, 109, 246, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.contact-field__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  padding: 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(47, 109, 246, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px rgba(17, 24, 39, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.98);
+  transform-origin: top center;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease;
+  pointer-events: none;
+}
+
+.contact-field.is-open .contact-field__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.contact-field__option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.96rem;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.contact-field__option:hover {
+  background: rgba(47, 109, 246, 0.08);
+  color: var(--accent-dark);
+}
+
+.contact-field__option:active {
+  transform: scale(0.995);
+}
+
+.contact-field__option.is-active {
+  background: rgba(47, 109, 246, 0.1);
+  color: var(--accent-dark);
+}
+
+/* Состояния */
+.contact-field.is-error .contact-field__trigger {
+  border-color: #ff5a5f;
+  color: #ff5a5f;
+  box-shadow: 0 0 0 4px rgba(255, 90, 95, 0.1);
+}
+
+.contact-field.is-error .contact-field__icon {
+  color: #ff5a5f;
+}
+
+.contact-field.is-success .contact-field__trigger {
+  border-color: #35c46b;
+  color: #35c46b;
+  box-shadow: 0 0 0 4px rgba(53, 196, 107, 0.1);
+}
+
+.contact-field.is-success .contact-field__icon {
+  color: #35c46b;
+}
+
+/* скрытый настоящий input/select */
+.contact-field__native {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  .contact-field__trigger {
+    min-height: 54px;
+    padding: 15px 16px;
+    border-radius: 16px;
+  }
+
+  .contact-field__value {
+    font-size: 0.94rem;
+  }
+
+  .contact-field__menu {
+    border-radius: 16px;
+  }
+
+  .contact-field__option {
+    min-height: 46px;
+    font-size: 0.93rem;
+  }
+}
+
+/* ===== Contact dropdown sync patch ===== */
+.contact-type-label .contact-field {
+  margin-top: 8px;
+}
+
+.contact-field__native {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contact-field__trigger,
+.contact-field__option {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.contact-field__menu {
+  overflow: hidden;
+}
+
+.contact-field.is-error .contact-field__value,
+.contact-field.is-error .contact-field__option.is-active {
+  color: #ff5a5f;
+}
+
+.contact-field.is-success .contact-field__value,
+.contact-field.is-success .contact-field__option.is-active {
+  color: #35c46b;
+}
+/* ===== /Contact dropdown sync patch ===== */
