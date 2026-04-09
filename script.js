@@ -36,20 +36,50 @@ revealElements.forEach(el => observer.observe(el));
 const form = document.getElementById('leadForm');
 const formStatus = document.getElementById('formStatus');
 
-// Вставьте сюда свои данные Telegram
 const TELEGRAM_BOT_TOKEN = 'PASTE_YOUR_BOT_TOKEN';
 const TELEGRAM_CHAT_ID = 'PASTE_YOUR_CHAT_ID';
 
-if (form) {
+const nameInput = form ? form.querySelector('#name') : null;
+const contactType = form ? form.querySelector('#contactType') : null;
+const contactInput = form ? form.querySelector('#contactField') : null;
+const messageInput = form ? form.querySelector('#message') : null;
+
+const contactTypeField = form ? form.querySelector('#contactTypeField') : null;
+const contactFieldTrigger = form ? form.querySelector('#contactFieldTrigger') : null;
+const contactFieldValue = form ? form.querySelector('#contactFieldValue') : null;
+const contactFieldMenu = form ? form.querySelector('#contactFieldMenu') : null;
+const contactFieldOptions = form ? [...form.querySelectorAll('.contact-field__option')] : [];
+
+if (form && nameInput && contactType && contactInput && contactTypeField && contactFieldTrigger && contactFieldValue && contactFieldMenu) {
+  setupContactDropdown();
+
+  nameInput.addEventListener('beforeinput', handleNameBeforeInput);
+  nameInput.addEventListener('input', handleNameInput);
+
+  contactInput.addEventListener('beforeinput', handleContactBeforeInput);
+  contactInput.addEventListener('input', handleContactInput);
+  contactInput.addEventListener('focus', ensureContactPrefix);
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const name = document.getElementById('name').value.trim();
-    const telegram = document.getElementById('telegram').value.trim();
-    const message = document.getElementById('message').value.trim();
+    const nameError = getNameError();
+    const contactError = getContactError();
 
-    if (!name || !telegram) {
-      setFormStatus('Пожалуйста, заполните имя и Telegram.', 'error');
+    validateName(true);
+    validateContact(true);
+
+    if (nameError) {
+      showFormAlert(nameError, 'error');
+      setFormStatus(nameError, 'error');
+      nameInput.focus();
+      return;
+    }
+
+    if (contactError) {
+      showFormAlert(contactError, 'error');
+      setFormStatus(contactError, 'error');
+      contactInput.focus();
       return;
     }
 
@@ -57,15 +87,24 @@ if (form) {
       TELEGRAM_BOT_TOKEN === 'PASTE_YOUR_BOT_TOKEN' ||
       TELEGRAM_CHAT_ID === 'PASTE_YOUR_CHAT_ID'
     ) {
-      setFormStatus('В script.js нужно вставить токен Telegram-бота и chat_id.', 'error');
+      showFormAlert('В script.js вставьте токен бота и chat_id.', 'error');
+      setFormStatus('В script.js вставьте токен бота и chat_id.', 'error');
       return;
     }
+
+    [nameInput, contactInput].forEach(markSuccessField);
+    markContactTypeState(true);
+
+    const name = nameInput.value.trim();
+    const contact = contactInput.value.trim();
+    const message = messageInput ? messageInput.value.trim() : '';
+    const contactTypeLabel = getContactTypeLabel(contactType.value);
 
     const text = [
       'Новая заявка с сайта Breakcode',
       '',
       `Имя: ${name}`,
-      `Telegram: ${telegram}`,
+      `${contactTypeLabel}: ${contact}`,
       `Задача: ${message || 'Не указана'}`
     ].join('\n');
 
@@ -85,19 +124,328 @@ if (form) {
         throw new Error('Ошибка при отправке');
       }
 
-      form.reset();
-      setFormStatus('Заявка отправлена. Команда скоро свяжется с вами.', 'success');
+      showFormAlert('Заявка отправлена. Скоро свяжемся с вами.', 'success');
+      setFormStatus('Заявка отправлена. Скоро свяжемся с вами.', 'success');
+
+      window.setTimeout(() => {
+        form.reset();
+        contactType.value = 'telegram';
+        syncContactTypeUI();
+        resetContactField();
+        clearFieldState(nameInput);
+        clearFieldState(contactInput);
+        clearContactTypeState();
+        if (messageInput) clearFieldState(messageInput);
+      }, 260);
     } catch (error) {
+      showFormAlert('Не удалось отправить заявку. Проверьте токен, chat_id или настройки бота.', 'error');
       setFormStatus('Не удалось отправить заявку. Проверьте токен, chat_id или настройки бота.', 'error');
       console.error(error);
     }
   });
+
+  resetContactField();
+}
+
+function setupContactDropdown() {
+  contactFieldTrigger.addEventListener('click', () => {
+    const isOpen = contactTypeField.classList.contains('is-open');
+    setDropdownOpen(!isOpen);
+  });
+
+  contactFieldTrigger.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!contactTypeField.classList.contains('is-open')) {
+        setDropdownOpen(true);
+      }
+    }
+    if (event.key === 'Escape') {
+      setDropdownOpen(false);
+    }
+  });
+
+  contactFieldOptions.forEach((option) => {
+    option.addEventListener('click', () => {
+      contactType.value = option.dataset.value || 'telegram';
+      syncContactTypeUI();
+      clearContactTypeState();
+      clearFieldState(contactInput);
+      resetContactField();
+      setDropdownOpen(false);
+      contactInput.focus();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!contactTypeField.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      setDropdownOpen(false);
+    }
+  });
+
+  syncContactTypeUI();
+}
+
+function setDropdownOpen(isOpen) {
+  contactTypeField.classList.toggle('is-open', isOpen);
+  contactFieldTrigger.setAttribute('aria-expanded', String(isOpen));
+  contactFieldMenu.setAttribute('aria-hidden', String(!isOpen));
+}
+
+function syncContactTypeUI() {
+  const current = contactType.value || 'telegram';
+  const labels = {
+    telegram: 'Telegram',
+    phone: 'Номер телефона',
+    email: 'Электронная почта'
+  };
+
+  contactFieldValue.textContent = labels[current] || 'Telegram';
+
+  contactFieldOptions.forEach((option) => {
+    const isActive = option.dataset.value === current;
+    option.classList.toggle('is-active', isActive);
+    option.setAttribute('aria-selected', String(isActive));
+  });
+}
+
+function handleNameBeforeInput(event) {
+  if (!event.data) return;
+  if (!/^[A-Za-zА-Яа-яЁё\s]+$/.test(event.data)) {
+    event.preventDefault();
+  }
+}
+
+function handleNameInput() {
+  const cleaned = nameInput.value.replace(/[^A-Za-zА-Яа-яЁё\s]/g, '');
+  nameInput.value = cleaned.replace(/\s{2,}/g, ' ').replace(/^\s+/g, '');
+  validateName(false);
+}
+
+function handleContactBeforeInput(event) {
+  if (!event.data) return;
+  const type = contactType.value;
+
+  if (type === 'telegram' && !/^[A-Za-z0-9_@]+$/.test(event.data)) {
+    event.preventDefault();
+  }
+
+  if (type === 'phone' && !/^\d+$/.test(event.data)) {
+    event.preventDefault();
+  }
+}
+
+function handleContactInput() {
+  const type = contactType.value;
+  const rawValue = contactInput.value;
+
+  if (type === 'telegram') {
+    const withoutAt = rawValue.replace(/@/g, '').replace(/[^A-Za-z0-9_]/g, '').slice(0, 32);
+    contactInput.value = '@' + withoutAt;
+    setCaretToEnd(contactInput);
+  }
+
+  if (type === 'phone') {
+    let digits = rawValue.replace(/\D/g, '');
+
+    if (digits.startsWith('8')) {
+      digits = '7' + digits.slice(1);
+    }
+
+    if (!digits.startsWith('7')) {
+      digits = '7' + digits;
+    }
+
+    digits = digits.slice(0, 11);
+    contactInput.value = formatRuPhone(digits);
+    setCaretToEnd(contactInput);
+  }
+
+  validateContact(false);
+}
+
+function ensureContactPrefix() {
+  if (contactType.value === 'telegram' && !contactInput.value) {
+    contactInput.value = '@';
+    setCaretToEnd(contactInput);
+  }
+
+  if (contactType.value === 'phone' && !contactInput.value) {
+    contactInput.value = '+7';
+    setCaretToEnd(contactInput);
+  }
+}
+
+function validateName(markTouched = true) {
+  const isValid = !getNameError();
+  updateFieldState(nameInput, isValid, markTouched);
+  return isValid;
+}
+
+function validateContact(markTouched = true) {
+  const isValid = !getContactError();
+  updateFieldState(contactInput, isValid, markTouched);
+  markContactTypeState(isValid, markTouched);
+  return isValid;
+}
+
+function getNameError() {
+  const value = nameInput.value.trim();
+
+  if (!value) return 'Введите имя';
+  if (value.length < 3) return 'Введите минимум 3 буквы в имени';
+  if (!/^[A-Za-zА-Яа-яЁё\s]+$/.test(value)) return 'Для имени допустимы только русские или английские буквы';
+
+  return '';
+}
+
+function getContactError() {
+  const value = contactInput.value.trim();
+  const type = contactType.value;
+
+  if (type === 'telegram') {
+    if (!value || value === '@') return 'Введите ваш ник в Telegram';
+    if (!/^@[A-Za-z0-9_]{4,32}$/.test(value)) return 'В нике Telagram могут быть только латиница, цифры и _';
+    return '';
+  }
+
+  if (type === 'phone') {
+    const digits = value.replace(/\D/g, '');
+    if (!digits || digits === '7') return 'Введите номер РФ';
+    if (!/^7\d{10}$/.test(digits)) return 'Введите полный номер';
+    return '';
+  }
+
+  if (type === 'email') {
+    if (!value) return 'Введите email';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Введите корректный email';
+    return '';
+  }
+
+  return '';
+}
+
+function updateFieldState(field, isValid, markTouched = true) {
+  if (!field) return;
+
+  field.classList.remove('is-error', 'is-success');
+
+  if (!markTouched && !field.value.trim()) return;
+
+  field.classList.add(isValid ? 'is-success' : 'is-error');
+}
+
+function clearFieldState(field) {
+  if (!field) return;
+  field.classList.remove('is-error', 'is-success');
+}
+
+function markSuccessField(field) {
+  if (!field) return;
+  field.classList.remove('is-error');
+  field.classList.add('is-success');
+}
+
+function markContactTypeState(isValid, markTouched = true) {
+  if (!contactTypeField) return;
+
+  contactTypeField.classList.remove('is-error', 'is-success');
+
+  if (!markTouched && !contactInput.value.trim()) return;
+
+  contactTypeField.classList.add(isValid ? 'is-success' : 'is-error');
+}
+
+function clearContactTypeState() {
+  if (!contactTypeField) return;
+  contactTypeField.classList.remove('is-error', 'is-success');
+}
+
+function resetContactField() {
+  if (!contactInput || !contactType) return;
+
+  if (contactType.value === 'telegram') {
+    contactInput.type = 'text';
+    contactInput.inputMode = 'text';
+    contactInput.placeholder = '@username';
+    contactInput.maxLength = 33;
+    contactInput.value = '@';
+    setCaretToEnd(contactInput);
+  }
+
+  if (contactType.value === 'phone') {
+    contactInput.type = 'tel';
+    contactInput.inputMode = 'numeric';
+    contactInput.placeholder = '+7 900 123-45-67';
+    contactInput.maxLength = 16;
+    contactInput.value = '+7';
+    setCaretToEnd(contactInput);
+  }
+
+  if (contactType.value === 'email') {
+    contactInput.type = 'email';
+    contactInput.inputMode = 'email';
+    contactInput.placeholder = 'mail@example.com';
+    contactInput.removeAttribute('maxLength');
+    contactInput.value = '';
+  }
+
+  setFormStatus('', '');
+  syncContactTypeUI();
+}
+
+function formatRuPhone(digits) {
+  let formatted = '+7';
+  if (digits.length > 1) formatted += ' ' + digits.slice(1, 4);
+  if (digits.length >= 5) formatted += ' ' + digits.slice(4, 7);
+  if (digits.length >= 8) formatted += '-' + digits.slice(7, 9);
+  if (digits.length >= 10) formatted += '-' + digits.slice(9, 11);
+  return formatted;
+}
+
+function getContactTypeLabel(type) {
+  if (type === 'telegram') return 'Telegram';
+  if (type === 'phone') return 'Номер телефона';
+  if (type === 'email') return 'Электронная почта';
+  return 'Контакт';
+}
+
+function showFormAlert(message, type = 'success') {
+  const existing = document.querySelector('.form-alert');
+  if (existing) existing.remove();
+
+  const alert = document.createElement('div');
+  alert.className = `form-alert ${type}`;
+  alert.textContent = message;
+  document.body.appendChild(alert);
+
+  requestAnimationFrame(() => {
+    alert.classList.add('is-visible');
+  });
+
+  setTimeout(() => {
+    alert.classList.remove('is-visible');
+    setTimeout(() => alert.remove(), 360);
+  }, 3200);
 }
 
 function setFormStatus(message, type) {
   if (!formStatus) return;
   formStatus.textContent = message;
-  formStatus.className = `form-status ${type}`;
+  formStatus.className = `form-status${type ? ' ' + type : ''}`;
+}
+
+function setCaretToEnd(input) {
+  const length = input.value.length;
+  requestAnimationFrame(() => {
+    input.setSelectionRange(length, length);
+  });
 }
 
 let lenisInstance = null;
