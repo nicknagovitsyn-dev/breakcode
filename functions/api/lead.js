@@ -15,6 +15,22 @@ export async function onRequestPost(context) {
       return json({ ok: false, message: 'Не заполнены обязательные поля.' }, 400);
     }
 
+    if (!isValidName(name)) {
+      return json({ ok: false, message: 'Некорректное имя.' }, 400);
+    }
+
+    if (contactType === 'telegram' && !isValidTelegram(contact)) {
+      return json({ ok: false, message: 'Некорректный Telegram.' }, 400);
+    }
+
+    if (contactType === 'phone' && !isValidPhone(contact)) {
+      return json({ ok: false, message: 'Некорректный номер телефона.' }, 400);
+    }
+
+    if (contactType === 'email' && !isValidEmail(contact)) {
+      return json({ ok: false, message: 'Некорректный email.' }, 400);
+    }
+
     if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
       return json({ ok: false, message: 'Не настроены переменные окружения на сервере.' }, 500);
     }
@@ -67,4 +83,21 @@ function escapeHtml(value) {
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
+}
+
+function isValidName(name) {
+  return /^[A-Za-zА-Яа-яЁё\s]{3,}$/.test(name);
+}
+
+function isValidTelegram(contact) {
+  return /^@[A-Za-z0-9_]{4,32}$/.test(contact);
+}
+
+function isValidPhone(contact) {
+  const digits = contact.replace(/\D/g, '');
+  return /^7\d{10}$/.test(digits);
+}
+
+function isValidEmail(contact) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
 }
