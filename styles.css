@@ -1128,6 +1128,7 @@ h3,
   background: var(--accent);
   transform: scale(1.15);
 }
+
 .case-tags {
   display: flex;
   flex-wrap: wrap;
@@ -1852,6 +1853,7 @@ h3,
 .form-alert.error {
   background: #ff5a5f;
 }
+
 /* ===== /Form patch ===== */
 
 
@@ -2069,4 +2071,9 @@ h3,
 .contact-field.is-success .contact-field__option.is-active {
   color: #35c46b;
 }
-/* ===== /Contact dropdown sync patch ===== */
+
+.form-turnstile {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+}

@@ -102,7 +102,8 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
           contactTypeLabel,
           message,
           page: window.location.href,
-          userAgent: navigator.userAgent
+          userAgent: navigator.userAgent,
+          turnstileToken: getTurnstileToken()
         })
       });
 
@@ -898,3 +899,9 @@ if (canUseCursor && cursorDot && cursorRing) {
 }
 
 handleScrollState(window.scrollY);
+
+function getTurnstileToken() {
+  const input = 
+  document.querySelector('[name="cf-turnstile-responce"]');
+  return input ? input.value : '';
+}

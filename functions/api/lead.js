@@ -31,6 +31,33 @@ export async function onRequestPost(context) {
       return json({ ok: false, message: 'Некорректный email.' }, 400);
     }
 
+    // 🔐 TURNSTILE
+    const turnstileToken = body?.turnstileToken;
+
+    if (!turnstileToken) {
+      return json({ ok: false, message: 'Проверка безопасности не пройдена.' }, 400);
+    }
+
+    const verifyResponse = await fetch(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          secret: env.TURNSTILE_SECRET_KEY,
+          response: turnstileToken
+        })
+      }
+    );
+
+    const verifyData = await verifyResponse.json();
+
+    if (!verifyData.success) {
+      return json({ ok: false, message: 'Turnstile проверка не пройдена.' }, 400);
+    }
+
     if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
       return json({ ok: false, message: 'Не настроены переменные окружения на сервере.' }, 500);
     }
@@ -63,6 +90,7 @@ export async function onRequestPost(context) {
     }
 
     return json({ ok: true, message: 'Заявка отправлена. Скоро свяжемся с вами.' }, 200);
+
   } catch (error) {
     return json({ ok: false, message: 'Ошибка обработки формы.' }, 500);
   }
