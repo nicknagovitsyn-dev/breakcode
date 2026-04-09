@@ -36,7 +36,8 @@ revealElements.forEach(el => observer.observe(el));
 const form = document.getElementById('leadForm');
 const formStatus = document.getElementById('formStatus');
 
-const LEAD_API_URL = '/api/lead';
+const TELEGRAM_BOT_TOKEN = 'PASTE_YOUR_BOT_TOKEN';
+const TELEGRAM_CHAT_ID = 'PASTE_YOUR_CHAT_ID';
 
 const nameInput = form ? form.querySelector('#name') : null;
 const contactType = form ? form.querySelector('#contactType') : null;
@@ -82,6 +83,15 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
       return;
     }
 
+    if (
+      TELEGRAM_BOT_TOKEN === 'PASTE_YOUR_BOT_TOKEN' ||
+      TELEGRAM_CHAT_ID === 'PASTE_YOUR_CHAT_ID'
+    ) {
+      showFormAlert('В script.js вставьте токен бота и chat_id.', 'error');
+      setFormStatus('В script.js вставьте токен бота и chat_id.', 'error');
+      return;
+    }
+
     [nameInput, contactInput].forEach(markSuccessField);
     markContactTypeState(true);
 
@@ -89,6 +99,14 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
     const contact = contactInput.value.trim();
     const message = messageInput ? messageInput.value.trim() : '';
     const contactTypeLabel = getContactTypeLabel(contactType.value);
+
+    const text = [
+      'Новая заявка с сайта Breakcode',
+      '',
+      `Имя: ${name}`,
+      `${contactTypeLabel}: ${contact}`,
+      `Задача: ${message || 'Не указана'}`
+    ].join('\n');
 
     try {
       const response = await fetch(LEAD_API_URL, {
@@ -127,8 +145,8 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
         if (messageInput) clearFieldState(messageInput);
       }, 260);
     } catch (error) {
-      showFormAlert(error?.message || 'Не удалось отправить заявку. Попробуйте позже.', 'error');
-      setFormStatus(error?.message || 'Не удалось отправить заявку. Попробуйте позже.', 'error');
+      showFormAlert('Не удалось отправить заявку. Проверьте токен, chat_id или настройки бота.', 'error');
+      setFormStatus('Не удалось отправить заявку. Проверьте токен, chat_id или настройки бота.', 'error');
       console.error(error);
     }
   });
@@ -288,8 +306,8 @@ function getNameError() {
   const value = nameInput.value.trim();
 
   if (!value) return 'Введите имя';
-  if (value.length < 3) return 'Введите минимум 3 буквы';
-  if (!/^[A-Za-zА-Яа-яЁё\s]+$/.test(value)) return 'Только русские или английские буквы';
+  if (value.length < 3) return 'Введите минимум 3 буквы в имени';
+  if (!/^[A-Za-zА-Яа-яЁё\s]+$/.test(value)) return 'Для имени допустимы только русские или английские буквы';
 
   return '';
 }
@@ -300,14 +318,14 @@ function getContactError() {
 
   if (type === 'telegram') {
     if (!value || value === '@') return 'Введите ваш ник в Telegram';
-    if (!/^@[A-Za-z0-9_]{4,32}$/.test(value)) return 'Только латиница, цифры и _';
+    if (!/^@[A-Za-z0-9_]{4,32}$/.test(value)) return 'В нике Telagram могут быть только латиница, цифры и _';
     return '';
   }
 
   if (type === 'phone') {
     const digits = value.replace(/\D/g, '');
     if (!digits || digits === '7') return 'Введите номер РФ';
-    if (!/^7\d{10}$/.test(digits)) return 'Нужно 11 цифр';
+    if (!/^7\d{10}$/.test(digits)) return 'Введите полный номер';
     return '';
   }
 
@@ -435,11 +453,6 @@ function setCaretToEnd(input) {
   requestAnimationFrame(() => {
     input.setSelectionRange(length, length);
   });
-}
-
-
-function safeJson(response) {
-  return response.json().catch(() => null);
 }
 
 let lenisInstance = null;
