@@ -71,21 +71,23 @@ export async function onRequestPost(context) {
       `Страница: ${escapeHtml(page || '—')}`
     ].join('\n');
 
-    const telegramResponse = await fetch(
+    const tgResponse = await fetch(
       `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
           chat_id: env.TELEGRAM_CHAT_ID,
           text
         })
       }
     );
 
-    const telegramResult = await telegramResponse.json().catch(() => null);
+    const tgResult = await tgResponse.json().catch(() => null);
 
-    if (!telegramResponse.ok || !telegramResult?.ok) {
+    if (!tgResponse.ok || !tgResult?.ok) {
       return json({ ok: false, message: 'Ошибка отправки в Telegram.' }, 502);
     }
 
