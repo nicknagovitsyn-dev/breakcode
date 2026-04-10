@@ -35,7 +35,9 @@ revealElements.forEach(el => observer.observe(el));
 
 const form = document.getElementById('leadForm');
 const formStatus = document.getElementById('formStatus');
-const LEAD_API_URL = '/api/lead';
+
+const TELEGRAM_BOT_TOKEN = 'PASTE_YOUR_BOT_TOKEN';
+const TELEGRAM_CHAT_ID = 'PASTE_YOUR_CHAT_ID';
 
 const nameInput = form ? form.querySelector('#name') : null;
 const contactType = form ? form.querySelector('#contactType') : null;
@@ -81,6 +83,15 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
       return;
     }
 
+    if (
+      TELEGRAM_BOT_TOKEN === 'PASTE_YOUR_BOT_TOKEN' ||
+      TELEGRAM_CHAT_ID === 'PASTE_YOUR_CHAT_ID'
+    ) {
+      showFormAlert('В script.js вставьте токен бота и chat_id.', 'error');
+      setFormStatus('В script.js вставьте токен бота и chat_id.', 'error');
+      return;
+    }
+
     [nameInput, contactInput].forEach(markSuccessField);
     markContactTypeState(true);
 
@@ -88,6 +99,14 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
     const contact = contactInput.value.trim();
     const message = messageInput ? messageInput.value.trim() : '';
     const contactTypeLabel = getContactTypeLabel(contactType.value);
+
+    const text = [
+      'Новая заявка с сайта Breakcode',
+      '',
+      `Имя: ${name}`,
+      `${contactTypeLabel}: ${contact}`,
+      `Задача: ${message || 'Не указана'}`
+    ].join('\n');
 
     try {
       const response = await fetch(LEAD_API_URL, {
@@ -116,19 +135,38 @@ if (form && nameInput && contactType && contactInput && contactTypeField && cont
       setFormStatus('Заявка отправлена. Скоро свяжемся с вами.', 'success');
 
       window.setTimeout(() => {
-        form.reset();
-        contactType.value = 'telegram';
-        syncContactTypeUI();
-        resetContactField();
-        clearFieldState(nameInput);
-        clearFieldState(contactInput);
-        clearContactTypeState();
-        if (messageInput) clearFieldState(messageInput);
-      }, 260);
+        try {
+          form.reset();
+
+          if (contactType) {
+            contactType.value = 'telegram';
+          }
+
+          if (typeof syncContactTypeUI === 'function') {
+            syncContactTypeUI();
+          }
+
+          if (typeof resetContactField === 'function') {
+            resetContactField();
+          }
+
+          if (typeof clearFieldState === 'function') {
+            if (nameInput) clearFieldState(nameInput);
+            if (contactInput) clearFieldState(contactInput);
+            if (messageInput) clearFieldState(messageInput);
+          }
+
+          if (typeof clearContactTypeState === 'function') {
+            clearContactTypeState();
+          }
+        } catch (uiError) {
+          console.error('UI error after success:', uiError);
+        }
+      }, 200);
     } catch (error) {
-      showFormAlert('Не удалось отправить заявку. Попробуйте еще раз.', 'error');
-      setFormStatus('Не удалось отправить заявку. Попробуйте еще раз.', 'error');
-      console.error(error);
+      console.error('Submit error:', error);
+      showFormAlert('Не удалось отправить заявку. Попробуйте позже.', 'error');
+      setFormStatus('Ошибка отправки.', 'error');
     }
   });
 
@@ -299,7 +337,7 @@ function getContactError() {
 
   if (type === 'telegram') {
     if (!value || value === '@') return 'Введите ваш ник в Telegram';
-    if (!/^@[A-Za-z0-9_]{4,32}$/.test(value)) return 'В нике Telegram могут быть только латиница, цифры и _';
+    if (!/^@[A-Za-z0-9_]{4,32}$/.test(value)) return 'В нике Telagram могут быть только латиница, цифры и _';
     return '';
   }
 
@@ -434,14 +472,6 @@ function setCaretToEnd(input) {
   requestAnimationFrame(() => {
     input.setSelectionRange(length, length);
   });
-}
-
-async function safeJson(response) {
-  try {
-    return await response.json();
-  } catch {
-    return null;
-  }
 }
 
 let lenisInstance = null;
