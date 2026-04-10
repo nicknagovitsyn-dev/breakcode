@@ -2071,9 +2071,3 @@ h3,
 .contact-field.is-success .contact-field__option.is-active {
   color: #35c46b;
 }
-
-.form-turnstile {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 4px;
-}
