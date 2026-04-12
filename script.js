@@ -453,12 +453,15 @@ function handleScrollState(scrollTop = window.scrollY) {
   updateParallax(scrollTop);
 }
 
-if (window.Lenis) {
+const isPhone = window.matchMedia('(max-width: 767px)').matches;
+const shouldUseLenis = window.Lenis && !isPhone;
+
+if (shouldUseLenis) {
   lenisInstance = new Lenis({
     duration: 1.05,
     smoothWheel: true,
     smoothTouch: false,
-    syncTouch: true,
+    syncTouch: false,
     gestureOrientation: 'vertical'
   });
 
@@ -487,6 +490,20 @@ if (window.Lenis) {
   window.__lenis = lenisInstance;
 } else {
   window.addEventListener('scroll', () => handleScrollState(window.scrollY), { passive: true });
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    });
+  });
 }
 
 const sliders = document.querySelectorAll('[data-slider]');
