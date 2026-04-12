@@ -34,8 +34,6 @@ export async function onRequestPost(context) {
 
     if (!name || !contact || !contactType) {
       console.warn('[VALIDATION] Missing required fields', {
-        
-        ip: maskIp(clientIp),
         hasName: Boolean(name),
         hasContact: Boolean(contact),
         hasContactType: Boolean(contactType)
@@ -65,7 +63,6 @@ export async function onRequestPost(context) {
 
     if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
       console.error('[CONFIG] Missing Telegram env vars', {
-        
         hasBotToken: Boolean(env.TELEGRAM_BOT_TOKEN),
         hasChatId: Boolean(env.TELEGRAM_CHAT_ID)
       });
@@ -106,10 +103,8 @@ export async function onRequestPost(context) {
     }
 
     console.log('[LEAD] Sent successfully', {
-      
-      ip: maskIp(clientIp),
       contactType,
-      page: trimLog(page || '—', 180)
+      page: page || '—'
     });
 
     return json({ ok: true, message: 'Заявка отправлена. Скоро свяжемся с вами.' }, 200);
