@@ -98,13 +98,11 @@ export async function onRequestPost(context) {
     const tgResult = await tgResponse.json().catch(() => null);
 
     if (!tgResponse.ok || !tgResult?.ok) {
-      console.error('[TELEGRAM] Send failed', {
-        requestId,
-        status: tgResponse.status,
-        description: trimLog(tgResult?.description || '', 200),
-        errorCode: tgResult?.error_code || null
-      });
-      return json({ ok: false, message: 'Ошибка отправки в Telegram.' }, 502);
+      return json({
+        ok: false,
+        message: 'Ошибка отправки в Telegram.',
+        debug: tgResult
+      }, 502);
     }
 
     console.log('[LEAD] Sent successfully', {
@@ -115,8 +113,12 @@ export async function onRequestPost(context) {
     });
 
     return json({ ok: true, message: 'Заявка отправлена. Скоро свяжемся с вами.' }, 200);
-  } catch {
-    return json({ ok: false, message: 'Ошибка обработки формы.' }, 500);
+  } catch (error) {
+    return json({
+      ok: false,
+      message: 'Ошибка обработки формы.',
+      debug: String(error?.message || error)
+    }, 500);
   }
 }
 
